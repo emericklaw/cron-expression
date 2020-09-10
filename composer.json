@@ -1,5 +1,5 @@
 {
-    "name": "dragonmantank/cron-expression",
+    "name": "emericklaw/cron-expression",
     "type": "library",
     "description": "CRON for PHP: Calculate the next or previous run date and determine if a CRON expression is due",
     "keywords": ["cron", "schedule"],
@@ -29,7 +29,8 @@
         }
     },
     "replace": {
-        "mtdowling/cron-expression": "^1.0"
+        "mtdowling/cron-expression": "^1.0",
+        "dragonmantank/cron-expression": "^3.0.0"
     },
     "scripts": {
         "phpstan": "./vendor/bin/phpstan analyse -l 0 src tests"
