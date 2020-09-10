@@ -69,7 +69,7 @@ class CronExpression
      *
      * @return CronExpression
      */
-    public static function factory(string $expression, FieldFactoryInterface $fieldFactory = null): CronExpression
+    public static function factory(string $expression, FieldFactoryInterface $fieldFactory = null, bool $useOrForDayOfMonthDayOfWeek = true): CronExpression
     {
         $mappings = [
             '@yearly' => '0 0 1 1 *',
@@ -85,7 +85,7 @@ class CronExpression
             $expression = $mappings[$shortcut];
         }
 
-        return new static($expression, $fieldFactory ?: new FieldFactory());
+        return new static($expression, $fieldFactory ?: new FieldFactory(), $useOrForDayOfMonthDayOfWeek);
     }
 
     /**
@@ -114,9 +114,10 @@ class CronExpression
      * @param string $expression CRON expression (e.g. '8 * * * *')
      * @param null|FieldFactory $fieldFactory Factory to create cron fields
      */
-    public function __construct(string $expression, FieldFactory $fieldFactory = null)
+    public function __construct(string $expression, FieldFactory $fieldFactory = null, $useOrForDayOfMonthDayOfWeek = true)
     {
         $this->fieldFactory = $fieldFactory ?: new FieldFactory();
+        $this->useOrForDayOfMonthDayOfWeek = $useOrForDayOfMonthDayOfWeek;
         $this->setExpression($expression);
     }
 
@@ -366,7 +367,7 @@ class CronExpression
             $fields[$position] = $this->fieldFactory->getField($position);
         }
 
-        if (isset($parts[2]) && isset($parts[4])) {
+        if (isset($parts[2]) && isset($parts[4]) && $this->useOrForDayOfMonthDayOfWeek) {
             $domExpression = sprintf('%s %s %s %s *', $this->getExpression(0), $this->getExpression(1), $this->getExpression(2), $this->getExpression(3));
             $dowExpression = sprintf('%s %s * %s %s', $this->getExpression(0), $this->getExpression(1), $this->getExpression(3), $this->getExpression(4));
 
